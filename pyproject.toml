@@ -19,7 +19,7 @@ classifiers = [
     "Development Status :: 1",
     "Programming Language :: Python"
 ]
-dynamic = ["Dependencies"]
+dynamic = ["dependencies"]
 
 [tool.setuptools.dynamic]
 dependencies = {file = ["requirements.txt"]}
