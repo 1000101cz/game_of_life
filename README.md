@@ -4,6 +4,31 @@ Python PyQt implementation of Conway's Game of Life.
 
 You can find more about Conway's Game of Life and some examples on [Wikipedia](https://en.wikipedia.org/wiki/Conway's_Game_of_Life).
 
+<h2>Installation</h2>
+
+<h3>Clone repository</h3>
+
+Might work with variety of Python version as long as the package versions specified in `requirements.txt` are available for your Python version.
+
+```
+$ git clone https://github.com/1000101cz/game_of_life
+$ cd game_of_life
+$ pip install -r requirements.txt  # Install python requirements
+$ python main.py  # start the application
+```
+
+<h3>Install using pip</h3>
+
+Installation using pip requires Python 3.11+
+
+```
+$ pip install git+https://github.com/1000101cz/game_of_life.git 
+$ python
+
+>>> import game_of_life
+>>> game_of_life.start()
+```
+
 <h2>Load and save presets</h2>
 
 The game comes with three predefined game grid presets
