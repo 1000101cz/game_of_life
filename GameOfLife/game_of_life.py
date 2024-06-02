@@ -8,7 +8,7 @@ from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import pyqtSignal, QObject, QThread, Qt
 from PyQt5.QtWidgets import QWidget, QDialog, QMainWindow, QFileDialog
 
-_help_path = pl.Path(__file__).parent / 'src' / 'help_dialog.ui'
+_help_path = pl.Path(__file__).parent / 'help_dialog.ui'
 _help_dialog = uic.loadUiType(_help_path)[0]
 
 pg.setConfigOption('foreground', 'k')
@@ -416,7 +416,11 @@ class Main(QMainWindow):
         self.show()
 
 
-if __name__ == '__main__':
+def start():
     app = QtWidgets.QApplication([])
     main = Main()
     app.exec_()
+
+
+if __name__ == '__main__':
+    start()

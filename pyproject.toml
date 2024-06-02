@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+
+[project]
+name = "GameOfLife"
+version = "0.0.1"
+description = "Python PyQt implementation of Conway's Game of Life."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file = "LICENSE.txt"}
+keywords = ["GameOfLife", "Python", "PyQtGraph", "PyQt", "Game"]
+authors = [
+    {name = "Stepan Marousek"}
+]
+classifiers = [
+    "Development Status :: 1",
+    "Programming Language :: Python"
+]
+dynamic = ["Dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[project.urls]
+repository = "https://github.com/1000101cz/game_of_life"
