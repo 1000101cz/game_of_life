@@ -1,0 +1,4 @@
+include GameOfLife/*.ui
+include GameOFLife/presets/*.npy
+include *.ui
+include *.npy
