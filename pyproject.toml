@@ -27,3 +27,8 @@ dependencies = {file = ["requirements.txt"]}
 
 [project.urls]
 repository = "https://github.com/1000101cz/game_of_life"
+
+[tool.setuptools.packages]
+find = {}
+
+[options.packages.find]
