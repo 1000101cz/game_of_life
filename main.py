@@ -1,4 +1,4 @@
-from GameOfLife import start
+from game_of_life import start
 
 
 if __name__ == '__main__':

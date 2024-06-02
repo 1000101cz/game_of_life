@@ -1,4 +1,6 @@
+include game_of_life/*.ui
 include GameOfLife/*.ui
-include GameOFLife/presets/*.npy
+include game_of_life/presets/*.npy
+include GameOfLife/presets/*.npy
 include *.ui
 include *.npy
