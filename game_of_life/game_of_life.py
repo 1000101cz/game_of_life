@@ -368,9 +368,9 @@ class MainModule:
         help_dialog.exec_()
 
     def _load_preset(self):
-
-        fpath = QtWidgets.QFileDialog.getOpenFileName(self.widget, "Save Preset", '', "Preset files (*.npy)")[0]
-        if fpath is None:
+        def_folder = pl.Path(__file__).parent / 'presets'
+        fpath = QtWidgets.QFileDialog.getOpenFileName(self.widget, "Save Preset", str(def_folder), "Preset files (*.npy)")[0]
+        if fpath in [None, '']:
             return
         fpath = pl.Path(fpath)
 
@@ -391,8 +391,9 @@ class MainModule:
                     self.game_grid.select_cell((i, j))
 
     def _save_preset(self):
-        fpath = QFileDialog.getSaveFileName(self.widget, "Save Preset", '', "Preset files (*.npy)")[0]
-        if not fpath:
+        def_folder = pl.Path(__file__).parent / 'presets'
+        fpath = QFileDialog.getSaveFileName(self.widget, "Save Preset", str(def_folder), "Preset files (*.npy)")[0]
+        if fpath in [None, '']:
             return
         if not fpath.endswith('.npy'):
             fpath += '.npy'

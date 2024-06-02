@@ -24,6 +24,8 @@ Installation using pip requires Python 3.11+
 ```
 $ pip install git+https://github.com/1000101cz/game_of_life.git 
 $ python
+Python 3.11.9 (main, Apr 19 2024, 16:48:06) [GCC 11.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
 
 >>> import game_of_life
 >>> game_of_life.start()
