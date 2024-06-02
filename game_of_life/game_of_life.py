@@ -15,6 +15,7 @@ pg.setConfigOption('foreground', 'k')
 pg.setConfigOption('background', (255, 255, 255, 0))
 pg.setConfigOption('useOpenGL', 'True')
 pg.setConfigOption('useCupy', 'True')
+pg.setConfigOptions(antialias=False)
 
 _grid_10x10 = '10x10'
 _grid_25x25 = '25x25'
