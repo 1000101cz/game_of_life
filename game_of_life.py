@@ -5,14 +5,9 @@ import pathlib as pl
 from time import sleep
 import pyqtgraph as pg
 from loguru import logger
-from PyQt5 import QtCore, QtGui, uic
+from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from PyQt5.QtCore import pyqtSignal, QObject, QThread, Qt
-from PyQt5.QtWidgets import QWidget, QDialog
-
-
-plugin_name = "MainGameOfLife"
-button_name = "Game of Life"
-no_data_enabled = True
+from PyQt5.QtWidgets import QWidget, QDialog, QMainWindow, QFileDialog
 
 _help_path = pl.Path(__file__).parent / 'src' / 'help_dialog.ui'
 _help_dialog = uic.loadUiType(_help_path)[0]
@@ -26,58 +21,13 @@ _grid_50x50 = '50x50'
 _grid_custom = 'Custom'
 
 
-def load_preset(preset_name: str) -> np.ndarray:
-    if not preset_name.endswith('.npy'):
-        preset_name += '.npy'
-    fpath = pl.Path(__file__).parent / 'src' / 'presets' / preset_name
+def load_preset(fpath: pl.Path) -> np.ndarray:
     assert fpath.is_file()
     return np.load(fpath)
 
 
-def remove_preset(preset_name: str) -> bool:
-    if not preset_name.endswith('.npy'):
-        preset_name += '.npy'
-    try:
-        fpath = pl.Path(__file__).parent / 'src' / 'presets' / preset_name
-        os.remove(fpath)
-        return True
-    except Exception as e:
-        logger.error(f"Cannot remove preset {preset_name}")
-        logger.debug(e)
-        return False
-
-
-def save_preset(preset_name: str, preset: np.ndarray) -> None:
-    if not preset_name.endswith('.npy'):
-        preset_name += '.npy'
-    fpath = pl.Path(__file__).parent / 'src' / 'presets' / preset_name
+def save_preset(fpath: pl.Path, preset: np.ndarray) -> None:
     np.save(fpath, preset)
-
-
-def check_preset_name(preset_name: str) -> bool:
-    if not preset_name.endswith('.npy'):
-        preset_name += '.npy'
-    if not len(preset_name[:-4]):
-        return False
-    dot_found = False
-    for char in preset_name:
-        if char.lower() not in 'qwertyuioplkjhgfdsazxcvbnm._0123456789':
-            return False
-        if char == '.':
-            if dot_found:
-                return False
-            dot_found = True
-    if preset_name[:-4] in presets_list():
-        return False
-    return True
-
-
-def presets_list() -> list[str]:
-    path = pl.Path(__file__).parent / 'src' / 'presets'
-    a = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))]
-    for i in range(len(a)):
-        a[i] = a[i][:-4]
-    return a
 
 
 class _RectItem(pg.GraphicsObject):
@@ -306,7 +256,7 @@ class _HelpDialog(QDialog, _help_dialog):
 
 
 class MainModule:
-    def __init__(self, widget, ds, callback, plot_data, params, settings) -> None:
+    def __init__(self, widget) -> None:
         self.widget = widget
         self.game_grid = GameGrid(self._grid_clicked, self._start_stop_clicked)
         self.game_grid.init_plot(self.widget.widget_main)
@@ -419,17 +369,15 @@ class MainModule:
         help_dialog.exec_()
 
     def _load_preset(self):
-        options = presets_list()
-        preset_name = select_option(options=options, parent=self.widget, title='Select Preset',
-                                    button_desc='Select preset to be loaded',
-                                    ok_text='Load', action2=remove_preset, action2_text='Remove',
-                                    action2_remove=True)
-        if preset_name is None:
+
+        fpath = QtWidgets.QFileDialog.getOpenFileName(self.widget, "Save Preset", '', "Preset files (*.npy)")[0]
+        if fpath is None:
             return
+        fpath = pl.Path(fpath)
 
         self._start_stop_clicked(stop=True)
 
-        preset = load_preset(preset_name)
+        preset = load_preset(fpath)
 
         # change grid size
         self._connect_spins(False)
@@ -444,9 +392,13 @@ class MainModule:
                     self.game_grid.select_cell((i, j))
 
     def _save_preset(self):
-        name = text_input(check_fnc=check_preset_name, parent=self.widget, title='Save Preset', desc='Select name for current preset', ok_text='Save')
-        if name is not None:
-            save_preset(preset_name=name, preset=self.game_grid.grid)
+        fpath = QFileDialog.getSaveFileName(self.widget, "Save Preset", '', "Preset files (*.npy)")[0]
+        if not fpath:
+            return
+        if not fpath.endswith('.npy'):
+            fpath += '.npy'
+        fpath = pl.Path(fpath)
+        save_preset(fpath=fpath, preset=self.game_grid.grid)
 
     def update(self, callback_type, origin, active, **optional):
         ...
@@ -457,7 +409,10 @@ class Main(QMainWindow):
         super(Main, self).__init__()
         window_path = pl.Path(__file__).parent / 'main_window.ui'
         uic.loadUi(window_path, self)
-        widget = WidgetController(parent=self)
+        widget = QWidget()
+        widget_path = pl.Path(__file__).parent / 'game_of_life.ui'
+        uic.loadUi(widget_path, widget)
+        module = MainModule(widget=widget)
         self.stackedWidget.addWidget(widget)
         self.show()
 
