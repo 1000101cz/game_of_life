@@ -1,0 +1,10 @@
+{
+  "type": "main",
+  "version": "0.0.1",
+  "name": "MainGameOfLife",
+  "description": "Conway's Game of Life",
+  "author": "Stepan Marousek",
+  "ica_get": "1.0.5",
+  "link": "https://github.com/1000101cz"
+
+}
