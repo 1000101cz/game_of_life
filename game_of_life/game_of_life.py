@@ -13,6 +13,8 @@ _help_dialog = uic.loadUiType(_help_path)[0]
 
 pg.setConfigOption('foreground', 'k')
 pg.setConfigOption('background', (255, 255, 255, 0))
+pg.setConfigOption('useOpenGL', 'True')
+pg.setConfigOption('useCupy', 'True')
 
 _grid_10x10 = '10x10'
 _grid_25x25 = '25x25'
